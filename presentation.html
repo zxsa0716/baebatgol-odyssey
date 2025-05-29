@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배밭골 그린 커뮤니티 프로젝트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .slide-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #4ecdc4;
+            text-align: center;
+        }
+
+        .card-description {
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .phase-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #feca57);
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .phase-item {
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            min-width: 200px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .phase-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .phase-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .stats-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-before {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-after {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .arrow-down {
+            font-size: 2rem;
+            color: #4ecdc4;
+            margin: 0.5rem 0;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-indicators {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #4ecdc4;
+            transform: scale(1.5);
+        }
+
+        .big-number {
+            font-size: 6rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .impact-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .impact-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin: 1rem;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .impact-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .impact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+        }
+
+        .implementation-roadmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .roadmap-phase {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 4px solid #4ecdc4;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-phase:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+
+        .phase-duration {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .phase-details {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .quote-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+            border: 2px solid rgba(78, 205, 196, 0.3);
+            position: relative;
+        }
+
+        .quote-section::before {
+            content: '"';
+            font-size: 8rem;
+            color: rgba(78, 205, 196, 0.3);
+            position: absolute;
+            top: -2rem;
+            left: 2rem;
+        }
+
+        .quote-text {
+            font-size: 1.8rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: #4ecdc4;
+        }
+
+        .quote-author {
+            opacity: 0.8;
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2.5rem;
+            }
+            .phase-timeline {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .phase-timeline::before {
+                display: none;
+            }
+            .big-number {
+                font-size: 4rem;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- 슬라이드 1: 타이틀 -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div class="slide-number">1 / 8</div>
+                <h1 class="slide-title">배밭골 그린 커뮤니티</h1>
+                <p class="slide-subtitle">청년 주도 환경 거버넌스 혁신 프로젝트</p>
+                <div class="big-number">4.2 → 2.0</div>
+                <p style="text-align: center; font-size: 1.2rem; opacity: 0.8;">
+                    일평균 신고 건수 50% 감소 목표
+                </p>
+                <div class="quote-section">
+                    <div class="quote-text">
+                        "작은 변화가 큰 혁명이 되는 순간을 목격하세요"
+                    </div>
+                    <div class="quote-author">
+                        산림환경시스템학과 20211818 최희도
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 2: 문제 현황 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">2 / 8</div>
+                <h2 class="slide-title">배밭골의 현실</h2>
+                <p class="slide-subtitle">숫자로 보는 환경 사각지대</p>
+                
+                <div class="stats-showcase">
+                    <div class="stat-item">
+                        <div class="stat-before">4.2건</div>
+                        <div class="stat-label">일평균 신고 건수</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">2.3배</div>
+                        <div class="stat-label">주말 쓰레기 증가율</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">67%</div>
+                        <div class="stat-label">분리배출 오류율</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">3,000만원</div>
+                        <div class="stat-label">연간 추가 청소비용</div>
+                    </div>
+                </div>
+
+                <div class="impact-visual">
+                    <div class="impact-item">
+                        <div class="impact-icon">🏠</div>
+                        <div class="impact-title">청년 1인가구</div>
+                        <div>58.7% 집중 거주</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-icon">📍</div>
+                        <div class="impact-title">국민대 인근</div>
+                        <div>500m 이내 위치</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-icon">🛣️</div>
+                        <div class="impact-title">경사진 지형</div>
+                        <div>좁은 골목길 구조</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 3: 4단계 해결방안 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">3 / 8</div>
+                <h2 class="slide-title">4단계 혁신 로드맵</h2>
+                <p class="slide-subtitle">체계적이고 지속가능한 변화</p>
+                
+                <div class="phase-timeline">
+                    <div class="phase-item">
+                        <div class="phase-number">1</div>
+                        <div>청년 환경리더<br>양성</div>
+                    </div>
+                    <div class="phase-item">
+                        <div class="phase-number">2</div>
+                        <div>그린 포인트<br>시스템</div>
+                    </div>
+                    <div class="phase-item">
+                        <div class="phase-number">3</div>
+                        <div>스마트<br>인프라</div>
+                    </div>
+                    <div class="phase-item">
+                        <div class="phase-number">4</div>
+                        <div>거버넌스<br>제도화</div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-icon">👥</div>
+                        <div class="card-title">Phase 1</div>
+                        <div class="card-description">
+                            국민대생 20명 + 지역 청년 10명<br>
+                            환경서포터즈 창단 및 운영
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-title">Phase 2</div>
+                        <div class="card-description">
+                            상생형 비즈니스 모델<br>
+                            올바른 분리배출 → 할인 혜택
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title">Phase 3</div>
+                        <div class="card-description">
+                            IoT 스마트 쓰레기통<br>
+                            실시간 모니터링 시스템
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🏛️</div>
+                        <div class="card-title">Phase 4</div>
+                        <div class="card-description">
+                            배밭골 환경위원회 설립<br>
+                            지속가능한 거버넌스 구축
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 4: Phase 1 상세 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">4 / 8</div>
+                <h2 class="slide-title">Phase 1: 청년 환경리더 양성</h2>
+                <p class="slide-subtitle">변화의 주체를 키우다</p>
+                
+                <div class="implementation-roadmap">
+                    <div class="roadmap-phase">
+                        <div class="phase-duration">1-3개월</div>
+                        <div class="phase-title">🎯 목표</div>
+                        <div class="phase-details">
+                            • 국민대생 20명 + 지역 청년 10명 모집<br>
+                            • 환경 모니터링 및 교육 활동<br>
+                            • SNS 캠페인 #배밭골_그린챌린지
+                        </div>
+                    </div>
+                    <div class="roadmap-phase">
+                        <div class="phase-duration">인센티브</div>
+                        <div class="phase-title">🎁 혜택</div>
+                        <div class="phase-details">
+                            • 학기당 30시간 봉사시간 인정<br>
+                            • 환경 분야 취업 멘토링<br>
+                            • 우수 활동자 성북구청장 표창
+                        </div>
+                    </div>
+                    <div class="roadmap-phase">
+                        <div class="phase-duration">활동</div>
+                        <div class="phase-title">📊 운영</div>
+                        <div class="phase-details">
+                            • 주 1회 환경 모니터링<br>
+                            • 월 1회 주민 분리배출 교육<br>
+                            • 실시간 SNS 캠페인 운영
+                        </div>
+                    </div>
+                </div>
+
+                <div class="big-number">30명</div>
+                <p style="text-align: center; font-size: 1.3rem;">
+                    청년 환경리더가 이끄는 변화
+                </p>
+            </div>
+        </div>
+
+        <!-- 슬라이드 5: Phase 2 상세 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">5 / 8</div>
+                <h2 class="slide-title">Phase 2: 그린 포인트 시스템</h2>
+                <p class="slide-subtitle">상생의 비즈니스 모델</p>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-icon">🏪</div>
+                        <div class="card-title">참여 상점</div>
+                        <div class="card-description">
+                            배밭골 주류/음식점 30개소<br>
+                            상인회와의 협력 체계 구축
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">📱</div>
+                        <div class="card-title">시스템 운영</div>
+                        <div class="card-description">
+                            올바른 분리배출 → QR코드 스캔<br>
+                            → 포인트 적립 → 할인 혜택
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-showcase">
+                    <div class="stat-item">
+                        <div class="stat-before">67%</div>
+                        <div class="arrow-down">⬇️</div>
+                        <div class="stat-after">85%</div>
+                        <div class="stat-label">분리배출 정확도</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">0%</div>
+                        <div class="arrow-down">⬇️</div>
+                        <div class="stat-after">5-10%</div>
+                        <div class="stat-label">상점 매출 증가</div>
+                    </div>
+                </div>
+
+                <div class="quote-section">
+                    <div class="quote-text">
+                        "환경 보호와 경제적 이익이 만나는 지점"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 6: Phase 3 상세 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">6 / 8</div>
+                <h2 class="slide-title">Phase 3: 스마트 인프라</h2>
+                <p class="slide-subtitle">기술과 환경의 융합</p>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-icon">🗑️</div>
+                        <div class="card-title">IoT 쓰레기통</div>
+                        <div class="card-description">
+                            배밭골 주요 5개 지점 설치<br>
+                            실시간 적재량 모니터링
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">🔊</div>
+                        <div class="card-title">스마트 기능</div>
+                        <div class="card-description">
+                            분리배출 음성 안내<br>
+                            무단투기 자동 신고 시스템
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-icon">📱</div>
+                        <div class="card-title">앱 연동</div>
+                        <div class="card-description">
+                            수거 일정 실시간 알림<br>
+                            환경 데이터 시각화
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-showcase">
+                    <div class="stat-item">
+                        <div class="stat-before">2,500만원</div>
+                        <div class="stat-label">총 구축 예산</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">5개소</div>
+                        <div class="stat-label">설치 지점</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">24/7</div>
+                        <div class="stat-label">실시간 모니터링</div>
+                    </div>
+                </div>
+
+                <div class="impact-visual">
+                    <div class="impact-item">
+                        <div class="impact-icon">💡</div>
+                        <div class="impact-title">재원 조달</div>
+                        <div>성북구 스마트시티 예산<br>+ 국민대 산학협력단</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 7: 예상 성과 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">7 / 8</div>
+                <h2 class="slide-title">2026년 예상 성과</h2>
+                <p class="slide-subtitle">데이터로 증명하는 변화</p>
+                
+                <div class="stats-showcase">
+                    <div class="stat-item">
+                        <div class="stat-before">4.2건</div>
+                        <div class="arrow-down">⬇️</div>
+                        <div class="stat-after">2.0건</div>
+                        <div class="stat-label">일평균 신고</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">2.3배</div>
+                        <div class="arrow-down">⬇️</div>
+                        <div class="stat-after">1.5배</div>
+                        <div class="stat-label">주말 증가율</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">67%</div>
+                        <div class="arrow-down">⬇️</div>
+                        <div class="stat-after">90%</div>
+                        <div class="stat-label">분리배출 정확도</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-before">3,000만원</div>
+                        <div class="arrow-down">⬇️</div>
+                        <div class="stat-after">1,500만원</div>
+                        <div class="stat-label">청소비용 절감</div>
+                    </div>
+                </div>
+
+                <div class="impact-visual">
+                    <div class="impact-item">
+                        <div class="impact-icon">🤝</div>
+                        <div class="impact-title">사회적 결속</div>
+                        <div>청년-기존주민 소통 증대</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-icon">🌱</div>
+                        <div class="impact-title">환경 인식</div>
+                        <div>지역 환경 의식 향상</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-icon">🏛️</div>
+                        <div class="impact-title">거버넌스</div>
+                        <div>주민 주도 문제 해결</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-icon">♻️</div>
+                        <div class="impact-title">지속성</div>
+                        <div>자발적 참여 기반</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 8: 비전과 다짐 -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="slide-number">8 / 8</div>
+                <h2 class="slide-title">미래를 향한 다짐</h2>
+                <p class="slide-subtitle">배밭골에서 대한민국으로</p>
+                
+                <div class="quote-section">
+                    <div class="quote-text">
+                        "지역사회는 내가 살아가는 곳이 아니라,<br>
+                        내가 만들어가는 곳이다"
+                    </div>
+                    <div class="quote-author">
+                        차세대 환경 리더의 다짐
+                    </div>
+                </div>
+
+                <div class="implementation-roadmap">
+                    <div class="roadmap-phase">
+                        <div class="phase-duration">6개월</div>
+                        <div class="phase-title">🎯 단기 목표</div>
+                        <div class="phase-details">
+                            • 환경서포터즈 창단 및 시범 운영<br>
+                            • 상인회 협력 체계 구축<br>
+                            • 성북구청 파트너십 체결
+                        </div>
+                    </div>
+                    <div class="roadmap-phase">
+                        <div class="phase-duration">1-2년</div>
+                        <div class="phase-title">🚀 중기 목표</div>
+                        <div class="phase-details">
+                            • 그린 포인트 시스템 안정화<br>
+                            • 스마트 인프라 구축 완료<br>
+                            • 타 지역 확산 모델 개발
+                        </div>
+                    </div>
+                    <div class="roadmap-phase">
+                        <div class="phase-duration">3-5년</div>
+                        <div class="phase-title">🌟 장기 비전</div>
+                        <div class="phase-details">
+                            • 환경위원회 제도화<br>
+                            • 전국 대학가 모델 확산<br>
+                            • 환경 거버넌스 전문가 성장
+                        </div>
+                    </div>
+                </div>
+
+                <div class="big-number">∞</div>
+                <p style="text-align: center; font-size: 1.3rem;">
+                    무한한 가능성을 향해
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 네비게이션 -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 이전</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">다음 →</button>
+    </div>
+
+    <!-- 슬라이드 인디케이터 -->
+    <div class="slide-indicators">
+        <div class="indicator active" onclick="goToSlide(0)"></div>
+        <div class="indicator" onclick="goToSlide(1)"></div>
+        <div class="indicator" onclick="goToSlide(2)"></div>
+        <div class="indicator" onclick="goToSlide(3)"></div>
+        <div class="indicator" onclick="goToSlide(4)"></div>
+        <div class="indicator" onclick="goToSlide(5)"></div>
+        <div class="indicator" onclick="goToSlide(6)"></div>
+        <div class="indicator" onclick="goToSlide(7)"></div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 8;
+
+        function updateSlideVisibility() {
+            const slides = document.querySelectorAll('.slide');
+            const indicators = document.querySelectorAll('.indicator');
+            
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+
+            // 네비게이션 버튼 상태 업데이트
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < totalSlides) {
+                currentSlide = newSlide;
+                updateSlideVisibility();
+            }
+        }
+
+        function goToSlide(slideIndex) {
+            if (slideIndex >= 0 && slideIndex < totalSlides) {
+                currentSlide = slideIndex;
+                updateSlideVisibility();
+            }
+        }
+
+        // 키보드 네비게이션
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            } else if (e.key >= '1' && e.key <= '8') {
+                goToSlide(parseInt(e.key) - 1);
+            }
+        });
+
+        // 터치 네비게이션 (모바일)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 왼쪽으로 스와이프 (다음 슬라이드)
+                    changeSlide(1);
+                } else {
+                    // 오른쪽으로 스와이프 (이전 슬라이드)
+                    changeSlide(-1);
+                }
+            }
+        }
+
+        // 자동 슬라이드 효과 (선택사항)
+        function startAutoSlide() {
+            setInterval(() => {
+                if (currentSlide < totalSlides - 1) {
+                    changeSlide(1);
+                } else {
+                    goToSlide(0); // 마지막 슬라이드에서 첫 번째로 돌아가기
+                }
+            }, 10000); // 10초마다 자동 넘김
+        }
+
+        // 카드 호버 효과 강화
+        function addCardAnimations() {
+            const cards = document.querySelectorAll('.content-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+                
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.05) rotateY(5deg)';
+                    card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1) rotateY(0deg)';
+                    card.style.boxShadow = 'none';
+                });
+            });
+        }
+
+        // 통계 애니메이션
+        function animateStats() {
+            const statItems = document.querySelectorAll('.stat-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transform = 'translateY(-15px) scale(1.05)';
+                        setTimeout(() => {
+                            entry.target.style.transform = 'translateY(0) scale(1)';
+                        }, 300);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            statItems.forEach(item => observer.observe(item));
+        }
+
+        // Phase 아이템 클릭 효과
+        function addPhaseInteractions() {
+            const phaseItems = document.querySelectorAll('.phase-item');
+            phaseItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // 모든 아이템에서 active 클래스 제거
+                    phaseItems.forEach(p => p.classList.remove('phase-active'));
+                    
+                    // 클릭된 아이템에 active 클래스 추가
+                    item.classList.add('phase-active');
+                    item.style.background = 'linear-gradient(45deg, #4ecdc4, #45b7d1)';
+                    item.style.color = 'white';
+                    
+                    setTimeout(() => {
+                        item.style.background = 'rgba(255, 255, 255, 0.9)';
+                        item.style.color = '#2c3e50';
+                    }, 2000);
+                });
+            });
+        }
+
+        // 슬라이드 전환 시 애니메이션 효과
+        function addSlideTransitionEffects() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const cards = entry.target.querySelectorAll('.content-card, .stat-item, .impact-item');
+                            cards.forEach((card, index) => {
+                                setTimeout(() => {
+                                    card.style.opacity = '1';
+                                    card.style.transform = 'translateY(0)';
+                                }, index * 150);
+                            });
+                        }
+                    });
+                }, { threshold: 0.3 });
+
+                observer.observe(slide);
+            });
+        }
+
+        // 프레젠테이션 모드 토글
+        function togglePresentationMode() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        }
+
+        // F11 키로 프레젠테이션 모드 토글
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F11') {
+                e.preventDefault();
+                togglePresentationMode();
+            }
+        });
+
+        // 프레젠테이션 도움말 표시
+        function showHelp() {
+            alert(`
+🎯 배밭골 그린 커뮤니티 프로젝트 프레젠테이션
+
+⌨️ 키보드 단축키:
+• ← → : 슬라이드 이동
+• 1-8 : 특정 슬라이드로 이동
+• F11 : 전체화면 모드
+
+📱 터치/마우스:
+• 스와이프로 슬라이드 이동
+• 카드 호버로 상세 정보
+• 인디케이터 클릭으로 바로 이동
+
+🚀 자동 슬라이드: 10초마다 자동 진행
+            `);
+        }
+
+        // 초기화
+        window.addEventListener('load', () => {
+            updateSlideVisibility();
+            addCardAnimations();
+            animateStats();
+            addPhaseInteractions();
+            addSlideTransitionEffects();
+            
+            // 첫 슬라이드 로드 시 도움말 표시 (선택사항)
+            // setTimeout(showHelp, 1000);
+            
+            // 자동 슬라이드 시작 (선택사항)
+            // startAutoSlide();
+        });
+
+        // 프레젠테이션 진행률 표시
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.title = `배밭골 그린 커뮤니티 (${currentSlide + 1}/${totalSlides}) - ${Math.round(progress)}%`;
+        }
+
+        // 슬라이드 변경 시 progress 업데이트
+        const originalChangeSlide = changeSlide;
+        changeSlide = function(direction) {
+            originalChangeSlide(direction);
+            updateProgress();
+        };
+
+        const originalGoToSlide = goToSlide;
+        goToSlide = function(slideIndex) {
+            originalGoToSlide(slideIndex);
+            updateProgress();
+        };
+    </script>
+</body>
+</html>
+            

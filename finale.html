@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미래로의 다짐 | 배밭골 오디세이</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientDance 20s ease infinite;
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientDance {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 0% 0%; }
+        }
+
+        .constellation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .finale-container {
+            min-height: 100vh;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .finale-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .finale-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: colorShift 3s ease infinite;
+        }
+
+        @keyframes colorShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .finale-subtitle {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            font-style: italic;
+            margin-bottom: 3rem;
+        }
+
+        .journey-timeline {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem;
+            margin: 3rem 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .timeline-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #4ecdc4;
+        }
+
+        .journey-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .journey-step {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .journey-step::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(78, 205, 196, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .journey-step:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .journey-step:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .vision-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 4rem 3rem;
+            margin: 4rem 0;
+            text-align: center;
+            border: 2px solid rgba(78, 205, 196, 0.5);
+            position: relative;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .vision-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            border-radius: 25px;
+            z-index: -1;
+            animation: borderFlow 4s ease infinite;
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .vision-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #4ecdc4;
+        }
+
+        .vision-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .impact-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-5px) rotateY(5deg);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .impact-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f9ca24;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-label {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .commitment-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 4rem 3rem;
+            margin: 4rem 0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 1s ease-out 1.5s both;
+        }
+
+        .commitment-title {
+            font-size: 2.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #ff6b6b;
+        }
+
+        .commitment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .commitment-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border-left: 5px solid #4ecdc4;
+            transition: all 0.4s ease;
+        }
+
+        .commitment-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+            border-left-width: 8px;
+        }
+
+        .commitment-period {
+            background: rgba(78, 205, 196, 0.3);
+            color: #4ecdc4;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .commitment-text {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .quote-masterpiece {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 4rem;
+            margin: 4rem 0;
+            text-align: center;
+            border: 3px solid rgba(78, 205, 196, 0.4);
+            position: relative;
+            animation: fadeInUp 1s ease-out 2s both;
+        }
+
+        .quote-masterpiece::before {
+            content: '"';
+            position: absolute;
+            top: -1rem;
+            left: 2rem;
+            font-size: 8rem;
+            color: rgba(78, 205, 196, 0.3);
+            font-family: serif;
+        }
+
+        .quote-text {
+            font-size: 2rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: #4ecdc4;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .quote-author {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            font-weight: bold;
+        }
+
+        .signature-section {
+            text-align: center;
+            margin: 4rem 0;
+            padding: 3rem;
+            animation: fadeIn 2s ease-out 2.5s both;
+        }
+
+        .signature-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #f9ca24;
+        }
+
+        .signature-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .signature-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+
+        .signature-date {
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-10px) rotate(180deg);
+            }
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            opacity: 0.6;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+
+        .control-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #4ecdc4;
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #ff6b6b, #e74c3c);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .finale-title {
+                font-size: 2.5rem;
+            }
+            .vision-title {
+                font-size: 2rem;
+            }
+            .quote-text {
+                font-size: 1.5rem;
+            }
+            .commitment-grid {
+                grid-template-columns: 1fr;
+            }
+            .finale-container {
+                padding: 2rem 1rem;
+            }
+            .control-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: auto;
+            }
+            .journey-steps {
+                grid-template-columns: 1fr;
+            }
+            .impact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="constellation" id="constellation"></div>
+    <div class="floating-elements" id="floatingElements"></div>
+    <div class="scroll-indicator">스크롤하여 미래를 확인하세요 ↓</div>
+
+    <div class="finale-container">
+        <div class="finale-header">
+            <h1 class="finale-title">배밭골에서 세상으로</h1>
+            <p class="finale-subtitle">2개월간의 여정이 만들어낸 무한한 가능성</p>
+        </div>
+
+        <!-- 여정 타임라인 -->
+        <div class="journey-timeline">
+            <h2 class="timeline-title">🛤️ 변화의 여정</h2>
+            <div class="journey-steps">
+                <div class="journey-step" onclick="showStepDetail(0)">
+                    <div class="step-icon">🔍</div>
+                    <div class="step-title">문제 발견</div>
+                    <div class="step-description">
+                        일평균 4.2건의 신고<br>
+                        67% 분리배출 오류율<br>
+                        단순한 과제에서 시작된 관심
+                    </div>
+                </div>
+
+                <div class="journey-step" onclick="showStepDetail(1)">
+                    <div class="step-icon">📊</div>
+                    <div class="step-title">데이터 수집</div>
+                    <div class="step-description">
+                        2개월간의 현장 조사<br>
+                        정량적 분석과 정성적 관찰<br>
+                        숫자 뒤에 숨겨진 진실 발견
+                    </div>
+                </div>
+
+                <div class="journey-step" onclick="showStepDetail(2)">
+                    <div class="step-icon">🏛️</div>
+                    <div class="step-title">정책 분석</div>
+                    <div class="step-description">
+                        국가-서울시-성북구 3단계<br>
+                        체계적 정책 구조 파악<br>
+                        현실과 제도의 간극 이해
+                    </div>
+                </div>
+
+                <div class="journey-step" onclick="showStepDetail(3)">
+                    <div class="step-icon">🤝</div>
+                    <div class="step-title">이해관계자 분석</div>
+                    <div class="step-description">
+                        다양한 목소리 경청<br>
+                        갈등과 협력의 구조 파악<br>
+                        운명공동체로서의 깨달음
+                    </div>
+                </div>
+
+                <div class="journey-step" onclick="showStepDetail(4)">
+                    <div class="step-icon">💡</div>
+                    <div class="step-title">해결방안 도출</div>
+                    <div class="step-description">
+                        4단계 그린 커뮤니티 프로젝트<br>
+                        청년 주도 환경 거버넌스<br>
+                        지속가능한 시스템 설계
+                    </div>
+                </div>
+
+                <div class="journey-step" onclick="showStepDetail(5)">
+                    <div class="step-icon">🌟</div>
+                    <div class="step-title">미래 비전</div>
+                    <div class="step-description">
+                        배밭골에서 전국으로<br>
+                        개인적 성장에서 사회적 변화로<br>
+                        차세대 환경 리더의 탄생
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 비전 섹션 -->
+        <div class="vision-section">
+            <h2 class="vision-title">🎯 2030년 비전</h2>
+            <p class="vision-text">
+                배밭골에서 시작된 작은 변화가 대한민국 전체를 바꾸는 혁명이 될 때까지.<br>
+                청년들이 주도하는 환경 거버넌스가 새로운 패러다임을 만들어낼 때까지.<br>
+                지역사회가 진정한 상생과 협력의 공간이 될 때까지.
+            </p>
+
+            <div class="impact-grid">
+                <div class="impact-card" onclick="showImpactDetail('university')">
+                    <div class="impact-number">100+</div>
+                    <div class="impact-label">전국 대학가 확산</div>
+                </div>
+                <div class="impact-card" onclick="showImpactDetail('environment')">
+                    <div class="impact-number">50%</div>
+                    <div class="impact-label">환경 문제 감소</div>
+                </div>
+                <div class="impact-card" onclick="showImpactDetail('leaders')">
+                    <div class="impact-number">1,000+</div>
+                    <div class="impact-label">청년 환경리더 양성</div>
+                </div>
+                <div class="impact-card" onclick="showImpactDetail('future')">
+                    <div class="impact-number">∞</div>
+                    <div class="impact-label">무한한 가능성</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 다짐 섹션 -->
+        <div class="commitment-section">
+            <h2 class="commitment-title">📋 나의 다짐</h2>
+            <div class="commitment-grid">
+                <div class="commitment-item">
+                    <div class="commitment-period">6개월 내</div>
+                    <div class="commitment-text">
+                        국민대 환경서포터즈를 창단하고 배밭골 상인회와의 파트너십을 구축하겠습니다. 
+                        성북구청과의 협력 체계를 마련하여 그린 포인트 시스템의 기반을 다지겠습니다.
+                    </div>
+                </div>
+
+                <div class="commitment-item">
+                    <div class="commitment-period">1-2년 내</div>
+                    <div class="commitment-text">
+                        IoT 기반 스마트 인프라를 완성하고 배밭골 환경위원회를 제도화하겠습니다. 
+                        이 모델을 다른 대학가로 확산시켜 청년 환경 거버넌스의 새로운 표준을 만들겠습니다.
+                    </div>
+                </div>
+
+                <div class="commitment-item">
+                    <div class="commitment-period">3-5년 내</div>
+                    <div class="commitment-text">
+                        전국 100개 대학가에 이 모델을 확산시키고, 환경부와 협력하여 국가 정책에 반영하겠습니다. 
+                        차세대 환경 전문가로서 지속가능한 사회 구현에 헌신하겠습니다.
+                    </div>
+                </div>
+
+                <div class="commitment-item">
+                    <div class="commitment-period">평생</div>
+                    <div class="commitment-text">
+                        지역사회는 내가 살아가는 곳이 아니라 내가 만들어가는 곳이라는 신념을 잊지 않겠습니다. 
+                        작은 변화가 큰 희망이 된다는 것을 몸소 실천하며 살아가겠습니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 명언 섹션 -->
+        <div class="quote-masterpiece">
+            <div class="quote-text" id="quoteText">
+                지역사회는 내가 살아가는 곳이 아니라,<br>
+                내가 만들어가는 곳이다.<br><br>
+                작은 변화가 큰 희망이 되고,<br>
+                개인의 노력이 공동체의 변화가 되며,<br>
+                오늘의 실험이 내일의 표준이 된다.
+            </div>
+            <div class="quote-author">
+                배밭골에서 꿈을 키우는 차세대 환경 리더
+            </div>
+        </div>
+
+        <!-- 서명 섹션 -->
+        <div class="signature-section">
+            <div class="signature-title">🌱 새로운 시작을 향하여</div>
+            <div class="signature-text">
+                이 모든 여정은 끝이 아닌 시작입니다.<br>
+                배밭골에서 배운 것들을 가슴에 품고,<br>
+                더 넓은 세상으로 나아가겠습니다.
+            </div>
+            <div class="signature-name">산림환경시스템학과 20211818 최희도</div>
+            <div class="signature-date">2025년 3월 20일, 배밭골에서</div>
+        </div>
+    </div>
+
+    <!-- 컨트롤 버튼들 -->
+    <div class="control-buttons">
+        <button class="control-btn" onclick="showVoiceMessage()">🎤 음성 메시지</button>
+        <button class="control-btn" onclick="shareProject()">📤 프로젝트 공유</button>
+        <button class="control-btn" onclick="showChecklist()">✅ 완료 체크리스트</button>
+    </div>
+
+    <!-- 모달창들 -->
+    <div id="stepModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title" id="stepModalTitle"></div>
+            <div id="stepModalContent"></div>
+            <button class="close-btn" onclick="closeModal('stepModal')">닫기</button>
+        </div>
+    </div>
+
+    <div id="impactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title" id="impactModalTitle"></div>
+            <div id="impactModalContent"></div>
+            <button class="close-btn" onclick="closeModal('impactModal')">닫기</button>
+        </div>
+    </div>
+
+    <div id="voiceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">🎤 최희도의 음성 메시지</div>
+            <div id="voiceModalContent"></div>
+            <button class="close-btn" onclick="closeModal('voiceModal')">닫기</button>
+        </div>
+    </div>
+
+    <div id="checklistModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">🎯 프로젝트 완료 체크리스트</div>
+            <div id="checklistContent">
+                <div style="line-height: 2;">
+                    ✅ 🌱 서사시 "배밭골의 사계" 감상 완료<br>
+                    ✅ 📊 데이터 시각화 대시보드 탐험 완료<br>
+                    ✅ ✍️ 철학적 수필 "나에게 지역사회란" 읽기 완료<br>
+                    ✅ 🎯 해결방안 프레젠테이션 확인 완료<br>
+                    ✅ 🎮 지역사회 시뮬레이션 게임 체험 완료<br>
+                    ✅ 🌟 미래 비전과 다짐 확인 완료<br>
+                </div>
+                <div style="text-align: center; margin-top: 2rem; color: #4ecdc4; font-weight: bold;">
+                    🎉 모든 여정을 완주하신 것을 축하합니다!
+                </div>
+            </div>
+            <button class="close-btn" onclick="closeModal('checklistModal')">완료!</button>
+        </div>
+    </div>
+
+    <script>
+        // 별자리 생성
+        function createConstellation() {
+            const container = document.getElementById('constellation');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // 플로팅 아이콘 생성
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const icons = ['🌱', '🤝', '🏠', '📊', '💡', '🎯', '🌟', '♻️', '🏛️', '🎓'];
+            
+            for (let i = 0; i < 20; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-icon';
+                element.textContent = icons[Math.floor(Math.random() * icons.length)];
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animationDelay = Math.random() * 10 + 's';
+                element.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                container.appendChild(element);
+            }
+        }
+
+        // 여정 단계 상세 정보
+        const stepDetails = [
+            {
+                title: "🔍 문제 발견의 순간",
+                content: `<p>2024년 1월, 단순한 과제를 위해 찾은 배밭골에서 충격적인 현실을 마주했습니다.</p>
+                         <ul style="margin: 1rem 0; line-height: 1.8;">
+                           <li>• 매일 아침 쌓여있는 쓰레기 더미</li>
+                           <li>• 주민들의 불만과 한숨</li>
+                           <li>• 분리배출의 혼란</li>
+                           <li>• 무관심 속에서 반복되는 악순환</li>
+                         </ul>
+                         <p>이 순간, 저는 깨달았습니다. 이것은 단순한 환경 문제가 아니라 지역사회 전체의 시스템 문제라는 것을.</p>`
+            },
+            {
+                title: "📊 데이터가 말하는 진실",
+                content: `<p>2개월간의 체계적인 데이터 수집을 통해 배밭골의 현실을 수치로 확인했습니다.</p>
+                         <div style="background: rgba(78, 205, 196, 0.2); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                           <strong>핵심 발견사항:</strong><br>
+                           • 일평균 신고 4.2건 (지속적 증가 추세)<br>
+                           • 주말 쓰레기량 평일 대비 2.3배<br>
+                           • 분리배출 오류율 67%<br>
+                           • 연간 추가 청소비용 3,000만원
+                         </div>
+                         <p>숫자는 거짓말하지 않습니다. 이 데이터들이 보여주는 것은 구조적 문제의 심각성이었습니다.</p>`
+            },
+            {
+                title: "🏛️ 정책의 3단계 구조",
+                content: `<p>국가-서울시-성북구로 이어지는 정책 체계를 분석하며 제도와 현실의 간극을 발견했습니다.</p>
+                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                           <div style="background: rgba(255, 107, 107, 0.2); padding: 1rem; border-radius: 10px; text-align: center;">
+                             <strong>국가 정책</strong><br>
+                             자원순환 기본법<br>
+                             폐기물관리법
+                           </div>
+                           <div style="background: rgba(78, 205, 196, 0.2); padding: 1rem; border-radius: 10px; text-align: center;">
+                             <strong>서울시 정책</strong><br>
+                             직매립 제로 목표<br>
+                             AI 감시 시스템
+                           </div>
+                           <div style="background: rgba(69, 183, 209, 0.2); padding: 1rem; border-radius: 10px; text-align: center;">
+                             <strong>성북구 정책</strong><br>
+                             특별관리구역<br>
+                             건물주 협약
+                           </div>
+                         </div>
+                         <p>좋은 정책들이 있었지만, 현장에서의 실행력이 부족했습니다.</p>`
+            },
+            {
+                title: "🤝 다양한 목소리를 듣다",
+                content: `<p>가장 중요한 깨달음은 이해관계자들과의 만남에서 왔습니다.</p>
+                         <div style="line-height: 1.8; margin: 1rem 0;">
+                           <strong>🎓 청년 세입자:</strong> "편리함과 환경, 둘 다 포기할 수 없어요"<br>
+                           <strong>🏠 건물주:</strong> "관리비용이 계속 늘어나는데 어떻게 해야 할지..."<br>
+                           <strong>🏪 상인:</strong> "장사도 해야 하고 환경도 생각해야 하고..."<br>
+                           <strong>🏛️ 공무원:</strong> "민원은 계속 들어오는데 예산은 한정적이고..."<br>
+                           <strong>👥 기존 주민:</strong> "이 동네가 점점 살기 어려워져요"
+                         </div>
+                         <p>모두가 각자의 어려움을 가지고 있었고, 모두가 더 나은 지역사회를 원하고 있었습니다. 문제는 소통의 부재였습니다.</p>`
+            },
+            {
+                title: "💡 혁신적 해결방안의 탄생",
+                content: `<p>모든 분석을 종합하여 4단계 그린 커뮤니티 프로젝트를 설계했습니다.</p>
+                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+                           <div style="background: rgba(78, 205, 196, 0.2); padding: 1rem; border-radius: 10px;">
+                             <strong>Phase 1: 청년 환경리더 양성</strong><br>
+                             국민대생 20명 + 지역 청년 10명
+                           </div>
+                           <div style="background: rgba(249, 202, 36, 0.2); padding: 1rem; border-radius: 10px;">
+                             <strong>Phase 2: 그린 포인트 시스템</strong><br>
+                             상생형 비즈니스 모델 구축
+                           </div>
+                           <div style="background: rgba(69, 183, 209, 0.2); padding: 1rem; border-radius: 10px;">
+                             <strong>Phase 3: 스마트 인프라</strong><br>
+                             IoT 기반 쓰레기통 5개소 설치
+                           </div>
+                           <div style="background: rgba(255, 107, 107, 0.2); padding: 1rem; border-radius: 10px;">
+                             <strong>Phase 4: 거버넌스 제도화</strong><br>
+                             배밭골 환경위원회 설립
+                           </div>
+                         </div>
+                         <p>이 모든 것의 핵심은 '협력'이었습니다. 혼자서는 불가능하지만, 함께라면 가능한 변화였습니다.</p>`
+            },
+            {
+                title: "🌟 무한한 미래의 가능성",
+                content: `<p>배밭골에서 시작된 작은 실험이 어떻게 전국으로, 세계로 확산될 수 있을지 그려봤습니다.</p>
+                         <div style="text-align: center; margin: 2rem 0;">
+                           <strong style="font-size: 1.5rem; color: #4ecdc4;">확산 시나리오</strong><br><br>
+                           배밭골 모델 완성 (2025) <br>↓<br>
+                           성북구 8개 대학가 확산 (2026) <br>↓<br>
+                           서울시 25개 자치구 도입 (2027) <br>↓<br>
+                           전국 100개 대학가 적용 (2028-2030) <br>↓<br>
+                           K-환경 거버넌스 모델 완성 (2030+)
+                         </div>
+                         <p>저는 이 모든 과정의 주인공이 되고 싶습니다. 차세대 환경 리더로서 지속가능한 미래를 만들어가는 사람이 되고 싶습니다.</p>`
+            }
+        ];
+
+        // 임팩트 상세 정보
+        const impactDetails = {
+            university: {
+                title: "🎓 전국 100개 대학가 확산",
+                content: `<p>배밭골 모델을 전국 대학가로 확산시켜 청년 환경 거버넌스의 새로운 표준을 만들겠습니다.</p>
+                         <div style="background: rgba(78, 205, 196, 0.2); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                           <strong>목표 대학가:</strong><br>
+                           • 서울: 홍대, 신촌, 대학로, 건대 등 25개<br>
+                           • 경기: 수원, 안양, 성남 등 20개<br>
+                           • 부산: 서면, 남포동 등 15개<br>
+                           • 대구, 광주, 대전: 각 10개<br>
+                           • 기타 지역: 20개
+                         </div>
+                         <p>각 지역의 특성에 맞게 모델을 조정하여 진정한 전국 네트워크를 구축하겠습니다.</p>`
+            },
+            environment: {
+                title: "🌱 환경 문제 50% 감소",
+                content: `<p>체계적인 접근을 통해 대학가 환경 문제를 근본적으로 해결하겠습니다.</p>
+                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+                           <div style="background: rgba(255, 107, 107, 0.2); padding: 1rem; border-radius: 10px;">
+                             <strong>현재 상황</strong><br>
+                             • 일평균 신고 4.2건<br>
+                             • 분리배출 오류 67%<br>
+                             • 주말 쓰레기 2.3배<br>
+                             • 연간 비용 3,000만원
+                           </div>
+                           <div style="background: rgba(46, 204, 113, 0.2); padding: 1rem; border-radius: 10px;">
+                             <strong>목표 상황</strong><br>
+                             • 일평균 신고 2.0건<br>
+                             • 분리배출 정확도 90%<br>
+                             • 주말 쓰레기 1.5배<br>
+                             • 연간 비용 1,500만원
+                           </div>
+                         </div>
+                         <p>50% 개선이라는 목표는 야심차지만 달성 가능합니다. 협력이 만드는 기적을 보여드리겠습니다.</p>`
+            },
+            leaders: {
+                title: "🚀 1,000명 청년 환경리더 양성",
+                content: `<p>전국의 청년들이 환경 리더로 성장할 수 있는 체계적인 프로그램을 만들겠습니다.</p>
+                         <div style="line-height: 1.8; margin: 1rem 0;">
+                           <strong>리더 양성 프로그램:</strong><br>
+                           🎯 <strong>기초 과정</strong>: 환경 의식 함양 (100시간)<br>
+                           🎯 <strong>실무 과정</strong>: 정책 분석 및 기획 (200시간)<br>
+                           🎯 <strong>심화 과정</strong>: 프로젝트 리더십 (300시간)<br>
+                           🎯 <strong>전문가 과정</strong>: 거버넌스 설계 (500시간)
+                         </div>
+                         <div style="background: rgba(249, 202, 36, 0.2); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                           <strong>예상 성과:</strong><br>
+                           • 환경부 인턴십 연계: 200명<br>
+                           • 지자체 청년 정책위원: 300명<br>
+                           • 환경 스타트업 창업: 100명<br>
+                           • 환경 NGO 활동가: 400명
+                         </div>
+                         <p>1,000명의 청년 환경리더가 전국에서 활동하는 그날까지, 저는 이들의 멘토가 되겠습니다.</p>`
+            },
+            future: {
+                title: "∞ 무한한 가능성의 미래",
+                content: `<p>배밭골 프로젝트가 만들어낼 파급효과는 상상을 초월합니다.</p>
+                         <div style="text-align: center; margin: 2rem 0; font-size: 1.2rem; line-height: 2;">
+                           <strong style="color: #4ecdc4;">2030년 대한민국의 모습</strong><br><br>
+                           🌍 <strong>글로벌 환경 거버넌스 선도국</strong><br>
+                           🏛️ <strong>시민 참여형 정책 결정의 표준</strong><br>
+                           🤝 <strong>세대 간 협력의 새로운 모델</strong><br>
+                           🎓 <strong>대학-지역사회 상생의 전범</strong><br>
+                           🌱 <strong>지속가능한 도시 생태계 구축</strong>
+                         </div>
+                         <div style="background: rgba(78, 205, 196, 0.2); padding: 1.5rem; border-radius: 15px; margin: 1rem 0;">
+                           <strong style="font-size: 1.3rem;">∞ 무한대의 의미</strong><br><br>
+                           무한대는 끝이 없다는 뜻이 아닙니다.<br>
+                           시작이 있다는 뜻입니다.<br><br>
+                           배밭골에서 시작된 작은 변화가<br>
+                           얼마나 많은 사람들의 삶을 바꿀 수 있는지,<br>
+                           그 가능성에는 한계가 없습니다.
+                         </div>
+                         <p>이것이 바로 제가 꿈꾸는 미래입니다. 무한한 가능성이 현실이 되는 그날까지!</p>`
+            }
+        };
+
+        // 음성 메시지 목록
+        const voiceMessages = [
+            {
+                title: "🎤 여정의 시작",
+                message: "안녕하세요, 최희도입니다. 배밭골에서의 2개월간 여정이 제게 준 깨달음을 여러분과 나누고 싶습니다. 처음에는 단순한 과제였지만, 이제는 제 인생의 전환점이 되었습니다."
+            },
+            {
+                title: "🎤 지역사회의 의미",
+                message: "지역사회는 단순히 우리가 사는 공간이 아닙니다. 우리가 함께 만들어가는 꿈의 공간입니다. 서로 다른 이해관계를 가진 사람들이 모여 하나의 비전을 만들어갈 때, 그곳에서 진정한 공동체가 탄생합니다."
+            },
+            {
+                title: "🎤 변화의 힘",
+                message: "작은 변화가 큰 희망이 되고, 개인의 노력이 공동체 전체의 변화로 이어진다는 것을 배웠습니다. 일평균 4.2건의 신고에서 시작된 관심이 이렇게 큰 프로젝트로 발전할 줄 누가 알았겠어요?"
+            },
+            {
+                title: "🎤 미래에 대한 다짐",
+                message: "앞으로도 환경과 지역사회를 위해 끊임없이 노력하겠습니다. 배밭골에서 배운 협력의 가치를 전국으로, 전 세계로 확산시키고 싶습니다. 함께해 주세요! 우리의 미래를 함께 만들어가요!"
+            }
+        ];
+
+        // 여정 단계 상세 정보 표시
+        function showStepDetail(stepIndex) {
+            const modal = document.getElementById('stepModal');
+            const title = document.getElementById('stepModalTitle');
+            const content = document.getElementById('stepModalContent');
+            
+            title.textContent = stepDetails[stepIndex].title;
+            content.innerHTML = stepDetails[stepIndex].content;
+            modal.style.display = 'flex';
+        }
+
+        // 임팩트 상세 정보 표시
+        function showImpactDetail(type) {
+            const modal = document.getElementById('impactModal');
+            const title = document.getElementById('impactModalTitle');
+            const content = document.getElementById('impactModalContent');
+            
+            title.textContent = impactDetails[type].title;
+            content.innerHTML = impactDetails[type].content;
+            modal.style.display = 'flex';
+        }
+
+        // 음성 메시지 표시
+        function showVoiceMessage() {
+            const modal = document.getElementById('voiceModal');
+            const content = document.getElementById('voiceModalContent');
+            
+            const randomMessage = voiceMessages[Math.floor(Math.random() * voiceMessages.length)];
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎤</div>
+                    <h3 style="color: #4ecdc4; margin-bottom: 1rem;">${randomMessage.title}</h3>
+                </div>
+                <div style="background: rgba(78, 205, 196, 0.2); padding: 2rem; border-radius: 15px; line-height: 1.8; text-align: center;">
+                    "${randomMessage.message}"
+                </div>
+                <div style="text-align: center; margin-top: 1rem; opacity: 0.8; font-style: italic;">
+                    - 최희도가 당신에게 보내는 진심 어린 메시지 -
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        // 프로젝트 공유
+        function shareProject() {
+            const shareText = `🌱 배밭골 그린 커뮤니티 프로젝트
+
+청년 주도 환경 거버넌스로 지역사회를 변화시키는 혁신적 프로젝트입니다!
+
+📊 현재 → 목표:
+• 일평균 신고 4.2건 → 2.0건
+• 분리배출 정확도 67% → 90%
+• 연간 청소비용 3,000만원 → 1,500만원
+
+🎯 4단계 실행방안:
+1. 청년 환경리더 양성 (30명)
+2. 그린 포인트 시스템 구축
+3. IoT 스마트 인프라 설치
+4. 환경위원회 제도화
+
+💫 비전:
+• 전국 100개 대학가 확산
+• 1,000명 청년 환경리더 양성
+• 환경 문제 50% 감소
+• 무한한 가능성 실현
+
+"지역사회는 내가 살아가는 곳이 아니라, 내가 만들어가는 곳이다"
+
+#배밭골 #환경 #지역사회 #청년 #협력 #지속가능성 #그린거버넌스`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: '배밭골 그린 커뮤니티 프로젝트',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('🎉 프로젝트 내용이 클립보드에 복사되었습니다!\n\nSNS나 메신저로 공유해주세요!');
+                }).catch(() => {
+                    // 클립보드 복사 실패 시 대안
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('🎉 프로젝트 내용이 복사되었습니다!');
+                });
+            }
+        }
+
+        // 완료 체크리스트 표시
+        function showChecklist() {
+            const modal = document.getElementById('checklistModal');
+            modal.style.display = 'flex';
+        }
+
+        // 모달 닫기
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // 스크롤 기반 패럴랙스 효과
+        function addScrollEffects() {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.scrollY;
+                const rate = scrolled * -0.3;
+                
+                // 패럴랙스 효과
+                const constellation = document.querySelector('.constellation');
+                if (constellation) {
+                    constellation.style.transform = `translateY(${rate}px)`;
+                }
+                
+                // 스크롤 진행률에 따른 배경 색상 변화
+                const winHeight = window.innerHeight;
+                const docHeight = document.documentElement.scrollHeight;
+                const scrollPercent = (scrolled / (docHeight - winHeight)) * 100;
+                const hue = Math.floor(scrollPercent * 2); // 0-200도
+                
+                document.documentElement.style.setProperty('--scroll-hue', hue + 'deg');
+            });
+        }
+
+        // 스크롤 기반 애니메이션
+        function addScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transform = 'scale(1.02)';
+                        entry.target.style.transition = 'transform 0.6s ease';
+                        
+                        setTimeout(() => {
+                            entry.target.style.transform = 'scale(1)';
+                        }, 600);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('.journey-timeline, .vision-section, .commitment-section, .quote-masterpiece').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // 키보드 이스터 에그
+        function addEasterEgg() {
+            let konamiCode = [];
+            const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+            
+            document.addEventListener('keydown', (e) => {
+                konamiCode.push(e.code);
+                konamiCode = konamiCode.slice(-10);
+                
+                if (konamiCode.join(',') === konamiSequence.join(',')) {
+                    // 특별 효과 활성화
+                    document.body.style.animation = 'rainbow 3s ease infinite';
+                    
+                    const celebration = document.createElement('div');
+                    celebration.innerHTML = `
+                        <div style="
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0,0,0,0.9);
+                            backdrop-filter: blur(15px);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            z-index: 3000;
+                            animation: celebration 2s ease infinite;
+                        ">
+                            <div style="
+                                background: rgba(255,255,255,0.1);
+                                backdrop-filter: blur(15px);
+                                border-radius: 20px;
+                                padding: 3rem;
+                                text-align: center;
+                                max-width: 500px;
+                                border: 3px solid #f9ca24;
+                                color: white;
+                            ">
+                                <div style="font-size: 4rem; margin-bottom: 1rem;">🎉🎊✨</div>
+                                <div style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem; color: #f9ca24;">
+                                    축하합니다! 숨겨진 메시지를 발견했습니다!
+                                </div>
+                                <div style="font-size: 1.3rem; line-height: 1.6; margin-bottom: 2rem;">
+                                    "진정한 변화는 호기심과 끈기에서 시작됩니다.<br>
+                                    당신처럼 끝까지 탐구하는 사람이 세상을 바꿉니다!"
+                                </div>
+                                <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 2rem;">
+                                    - 최희도가 당신에게 보내는 특별한 메시지 -
+                                </div>
+                                <button onclick="this.closest('div').remove(); document.body.style.animation = 'none';" style="
+                                    background: linear-gradient(45deg, #f9ca24, #f0932b);
+                                    border: none;
+                                    color: white;
+                                    padding: 1rem 2rem;
+                                    border-radius: 25px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                    font-size: 1.1rem;
+                                ">감사합니다! 🌟</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes rainbow {
+                            0% { filter: hue-rotate(0deg) saturate(1.5); }
+                            25% { filter: hue-rotate(90deg) saturate(2); }
+                            50% { filter: hue-rotate(180deg) saturate(1.5); }
+                            75% { filter: hue-rotate(270deg) saturate(2); }
+                            100% { filter: hue-rotate(360deg) saturate(1.5); }
+                        }
+                        @keyframes celebration {
+                            0%, 100% { transform: scale(1); }
+                            50% { transform: scale(1.02); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    document.body.appendChild(celebration);
+                    
+                    konamiCode = []; // 리셋
+                }
+            });
+        }
+
+        // 초기화 함수
+        function initialize() {
+            createConstellation();
+            createFloatingElements();
+            addScrollEffects();
+            addScrollAnimations();
+            addEasterEgg();
+            
+            // 페이지 로드 완료 메시지
+            setTimeout(() => {
+                console.log('🌟 배밭골 오디세이 - 미래로의 다짐이 완성되었습니다!');
+                console.log('💝 모든 기능을 탐험해보세요:');
+                console.log('   • 여정 단계 클릭으로 상세 이야기 확인');
+                console.log('   • 영향 카드 클릭으로 미래 비전 탐험');
+                console.log('   • 음성 메시지로 진심 어린 다짐 듣기');
+                console.log('   • 프로젝트 공유로 함께하는 사람들 늘리기');
+                console.log('   • 완료 체크리스트로 여정 마무리');
+                console.log('   • 숨겨진 이스터 에그 찾기 (힌트: ↑↑↓↓←→←→BA)');
+                console.log('🚀 지역사회의 미래를 함께 만들어가요!');
+            }, 2000);
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', initialize);
+
+        // 언로드 시 감사 메시지
+        window.addEventListener('beforeunload', (e) => {
+            const message = '배밭골 오디세이를 함께해주셔서 감사합니다! 🌟\n\n이 프로젝트가 현실이 되는 그날까지 함께해주세요!';
+            e.returnValue = message;
+            return message;
+        });
+
+        // 웹사이트 성능 최적화
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('🚀 서비스워커 등록 성공:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('서비스워커 등록 실패:', error);
+                    });
+            });
+        }
+
+        // 접근성 개선
+        document.addEventListener('keydown', (e) => {
+            // Tab 키 네비게이션 개선
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-navigation');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-navigation');
+        });
+
+        // 다크모드 지원 (시스템 설정 따라감)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 시스템 다크모드 변경 감지
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        });
+
+        // 화면 크기 변경 시 반응형 처리
+        window.addEventListener('resize', () => {
+            // 모바일에서 가로/세로 전환 시 레이아웃 재조정
+            if (window.innerWidth < 768) {
+                document.querySelectorAll('.impact-grid').forEach(grid => {
+                    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                });
+            } else {
+                document.querySelectorAll('.impact-grid').forEach(grid => {
+                    grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+                });
+            }
+        });
+
+        // 프리로더 효과 (페이지 로딩 시)
+        window.addEventListener('load', () => {
+            const loader = document.createElement('div');
+            loader.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    color: white;
+                    font-family: Arial, sans-serif;
+                    transition: opacity 1s ease;
+                ">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 2s infinite;">🌟</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">배밭골 오디세이 로딩 중...</div>
+                        <div style="margin-top: 1rem; opacity: 0.8;">미래를 준비하고 있습니다</div>
+                    </div>
+                </div>
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.2); }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(loader);
+            
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.remove();
+                }, 1000);
+            }, 2000);
+        });
+
+        // 터치 제스처 지원 (모바일)
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            const swipeThreshold = 100;
+            const diff = touchStartY - touchEndY;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 위로 스와이프 - 페이지 아래로 스크롤
+                    window.scrollBy(0, window.innerHeight * 0.3);
+                } else {
+                    // 아래로 스와이프 - 페이지 위로 스크롤
+                    window.scrollBy(0, -window.innerHeight * 0.3);
+                }
+            }
+        }
+
+        // 웹 푸시 알림 지원 (선택적)
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('🔔 알림 권한이 허용되었습니다.');
+                        
+                        // 환영 알림
+                        setTimeout(() => {
+                            new Notification('배밭골 오디세이에 오신 것을 환영합니다! 🌟', {
+                                body: '지역사회 변화의 여정을 함께 시작해보세요!',
+                                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌱</text></svg>'
+                            });
+                        }, 5000);
+                    }
+                });
+            }
+        }
+
+        // 선택적으로 알림 권한 요청 (사용자가 페이지와 상호작용한 후)
+        document.addEventListener('click', requestNotificationPermission, { once: true });
+
+        // PWA 지원을 위한 매니페스트 (동적 생성)
+        const manifest = {
+            name: "배밭골 오디세이",
+            short_name: "배밭골",
+            description: "청년 주도 환경 거버넌스 프로젝트",
+            start_url: "/",
+            display: "standalone",
+            theme_color: "#4ecdc4",
+            background_color: "#667eea",
+            icons: [
+                {
+                    src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234ecdc4'/><text x='50' y='60' text-anchor='middle' font-size='40'>🌱</text></svg>",
+                    sizes: "192x192",
+                    type: "image/svg+xml"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        // 인쇄 스타일 최적화
+        const printStyles = `
+            @media print {
+                body {
+                    background: white !important;
+                    color: black !important;
+                }
+                .constellation, .floating-elements, .control-buttons, .scroll-indicator {
+                    display: none !important;
+                }
+                .finale-container {
+                    max-width: none !important;
+                    padding: 1rem !important;
+                }
+                .journey-timeline, .vision-section, .commitment-section, .quote-masterpiece {
+                    break-inside: avoid;
+                    margin-bottom: 2rem !important;
+                    border: 1px solid #ccc !important;
+                    background: white !important;
+                }
+            }
+        `;
+        
+        const printStyleSheet = document.createElement('style');
+        printStyleSheet.textContent = printStyles;
+        document.head.appendChild(printStyleSheet);
+
+        // 최종 완성 메시지
+        console.log(`
+        🎉 배밭골 오디세이 - 미래로의 다짐 완성! 🎉
+        
+        ✨ 구현된 기능들:
+        📱 완전 반응형 디자인
+        🎮 인터랙티브 요소들
+        🎤 음성 메시지 시스템
+        📤 소셜 공유 기능
+        ✅ 완료 체크리스트
+        🎯 상세 정보 모달
+        🌟 이스터 에그
+        ⚡ 성능 최적화
+        🔔 푸시 알림 지원
+        📱 PWA 기능
+        🖨️ 인쇄 최적화
+        
+        🚀 이제 완벽합니다!
+        `);
+    </script>
+</body>
+</html>

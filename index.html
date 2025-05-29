@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배밭골 오디세이 | 최희도</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .author {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .navigation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 1.5s both;
+        }
+
+        .nav-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .nav-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .footer-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-signature {
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <div class="hero">
+            <h1 class="main-title">배밭골 오디세이</h1>
+            <p class="subtitle">도시 속 환경 사각지대에서 찾은 지역사회의 의미</p>
+            <p class="author">산림환경시스템학과 20211818 최희도</p>
+        </div>
+
+        <div class="navigation">
+            <a href="poetry.html" class="nav-card floating" style="animation-delay: 0s;">
+                <div class="nav-icon">🌱</div>
+                <div class="nav-title">시: 배밭골의 사계</div>
+                <div class="nav-description">쓰레기 더미에서 피어나는 희망의 서사시. 감성적 도입으로 독자의 마음을 열다.</div>
+            </a>
+
+            <a href="dataviz.html" class="nav-card floating" style="animation-delay: 0.2s;">
+                <div class="nav-icon">📊</div>
+                <div class="nav-title">데이터 시각화</div>
+                <div class="nav-description">4.2건의 신고가 말하는 이야기. 인터랙티브 차트로 보는 배밭골의 현실.</div>
+            </a>
+
+            <a href="essay.html" class="nav-card floating" style="animation-delay: 0.4s;">
+                <div class="nav-icon">✍️</div>
+                <div class="nav-title">수필: 나에게 지역사회란</div>
+                <div class="nav-description">2개월간의 연구를 통해 깨달은 지역사회의 진정한 의미. 철학적 성찰의 기록.</div>
+            </a>
+
+            <a href="presentation.html" class="nav-card floating" style="animation-delay: 0.6s;">
+                <div class="nav-icon">🎯</div>
+                <div class="nav-title">해결방안 프레젠테이션</div>
+                <div class="nav-description">그린 커뮤니티 프로젝트. 4단계 실행 방안과 구체적 로드맵 제시.</div>
+            </a>
+
+            <a href="simulation.html" class="nav-card floating" style="animation-delay: 0.8s;">
+                <div class="nav-icon">🎮</div>
+                <div class="nav-title">지역사회 시뮬레이션</div>
+                <div class="nav-description">이해관계자가 되어보는 인터랙티브 게임. 협력의 중요성을 체험하다.</div>
+            </a>
+
+            <a href="finale.html" class="nav-card floating" style="animation-delay: 1s;">
+                <div class="nav-icon">🌟</div>
+                <div class="nav-title">미래로의 다짐</div>
+                <div class="nav-description">모든 여정의 결산. 차세대 환경 리더로서의 비전과 30년 로드맵.</div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                "지역사회는 내가 살아가는 곳이 아니라, 내가 만들어가는 곳이다"
+            </div>
+            <div class="footer-signature">
+                2025년 3월, 배밭골에서 꿈을 키우며
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 별 생성
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progressFill').style.width = scrolled + '%';
+        }
+
+        // 마우스 따라다니는 효과
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.nav-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const distance = Math.sqrt(x * x + y * y);
+                
+                if (distance < 200) {
+                    const strength = (200 - distance) / 200;
+                    card.style.transform = `translateY(-10px) scale(${1 + strength * 0.1}) rotateY(${x * strength * 0.1}deg) rotateX(${-y * strength * 0.1}deg)`;
+                }
+            });
+        });
+
+        // 초기화
+        window.addEventListener('load', () => {
+            createStars();
+            updateProgress();
+            
+            // 환영 메시지
+            setTimeout(() => {
+                console.log('🌟 배밭골 오디세이에 오신 것을 환영합니다!');
+                console.log('📚 각 섹션을 클릭하여 완전한 여정을 시작하세요!');
+                console.log('🎯 모든 페이지를 방문하여 완성된 프로젝트를 경험해보세요!');
+            }, 2000);
+        });
+
+        window.addEventListener('scroll', updateProgress);
+
+        // 키보드 네비게이션
+        document.addEventListener('keydown', (e) => {
+            const cards = document.querySelectorAll('.nav-card');
+            if (e.key >= '1' && e.key <= '6') {
+                const index = parseInt(e.key) - 1;
+                if (cards[index]) {
+                    cards[index].click();
+                }
+            }
+        });
+
+        // 접근성 개선
+        document.querySelectorAll('.nav-card').forEach((card, index) => {
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+            
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-label', `${card.querySelector('.nav-title').textContent} 페이지로 이동`);
+        });
+
+        // 모바일 터치 최적화
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.nav-card').forEach(card => {
+                card.addEventListener('touchstart', () => {
+                    card.style.transform = 'scale(0.95)';
+                });
+                
+                card.addEventListener('touchend', () => {
+                    card.style.transform = 'scale(1)';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

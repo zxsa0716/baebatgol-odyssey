@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배밭골의 사계 | 서사시</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', '나눔명조', serif;
+            background: linear-gradient(45deg, #2c3e50, #34495e, #2c3e50);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #ecf0f1;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .poem-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .poem-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .poem-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #f39c12, #e74c3c, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .poem-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .poem-section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .poem-section:nth-child(2) { animation-delay: 0.5s; }
+        .poem-section:nth-child(3) { animation-delay: 1s; }
+        .poem-section:nth-child(4) { animation-delay: 1.5s; }
+        .poem-section:nth-child(5) { animation-delay: 2s; }
+
+        .season-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .season-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ecf0f1, transparent);
+        }
+
+        .spring { color: #27ae60; }
+        .summer { color: #f39c12; }
+        .autumn { color: #e67e22; }
+        .winter { color: #3498db; }
+
+        .poem-verse {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .poem-verse:hover {
+            transform: translateX(10px);
+            color: #f39c12;
+        }
+
+        .poem-verse::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #95a5a6;
+            font-size: 1.5rem;
+        }
+
+        .emphasis {
+            font-weight: bold;
+            color: #e74c3c;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .whisper {
+            font-style: italic;
+            opacity: 0.7;
+            font-size: 1rem;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ecf0f1;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-10px) rotate(180deg);
+            }
+        }
+
+        .stats-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            z-index: 100;
+        }
+
+        .final-message {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .poem-title {
+                font-size: 2.5rem;
+            }
+            .season-title {
+                font-size: 2rem;
+            }
+            .poem-container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles" id="particles"></div>
+    
+    <div class="stats-overlay">
+        <div>📍 정릉3동 배밭골</div>
+        <div>📊 일평균 신고: 4.2건</div>
+        <div>🏠 1인가구 비율: 58.7%</div>
+        <div>♻️ 분리배출 오류: 67%</div>
+    </div>
+
+    <div class="poem-container">
+        <div class="poem-header">
+            <h1 class="poem-title">배밭골의 사계</h1>
+            <p class="poem-subtitle">쓰레기 더미에서 피어나는 희망의 서사시</p>
+        </div>
+
+        <div class="poem-section">
+            <h2 class="season-title spring">🌸 봄 - 각성의 계절</h2>
+            <div class="poem-verse">
+                국민대 뒷길, 경사진 골목길을 따라<br>
+                <span class="emphasis">4.2개의 신고전화</span>가 하루마다 울린다
+            </div>
+            <div class="poem-verse">
+                원룸 창틈으로 스며드는 봄바람에도<br>
+                <span class="whisper">67퍼센트의 잘못된 분리수거가 흩날린다</span>
+            </div>
+            <div class="poem-verse">
+                청년들아, 너희는 알고 있는가<br>
+                이 <span class="emphasis">58.7퍼센트의 1인 가구</span>들이<br>
+                만들어내는 도시의 그림자를
+            </div>
+            <div class="poem-verse">
+                하지만 봄은 온다, 반드시 온다<br>
+                쓰레기 더미 사이로도 새싹은 돋아나니
+            </div>
+        </div>
+
+        <div class="poem-section">
+            <h2 class="season-title summer">☀️ 여름 - 폭발의 계절</h2>
+            <div class="poem-verse">
+                주말이면 <span class="emphasis">2.3배로 쌓이는</span> 쓰레기 산<br>
+                치킨 상자와 소주병이 만든 바벨탑
+            </div>
+            <div class="poem-verse">
+                에어컨 바람에 날리는 플라스틱 봉지들<br>
+                마치 도시의 눈물처럼 골목을 떠돈다
+            </div>
+            <div class="poem-verse">
+                <span class="whisper">환경미화원 아저씨의 등은 더욱 굽어가고</span><br>
+                <span class="emphasis">연간 3천만원</span>의 추가 청소비가<br>
+                우리의 무관심을 측정한다
+            </div>
+            <div class="poem-verse">
+                하지만 여름 폭우는 모든 것을 씻어낸다<br>
+                새로운 시작을 약속하며
+            </div>
+        </div>
+
+        <div class="poem-section">
+            <h2 class="season-title autumn">🍂 가을 - 성찰의 계절</h2>
+            <div class="poem-verse">
+                단풍잎이 떨어지는 계절<br>
+                나는 비로소 깨달았다
+            </div>
+            <div class="poem-verse">
+                <span class="emphasis">지역사회란 무엇인가?</span><br>
+                그것은 나 혼자 사는 원룸이 아니라<br>
+                우리 모두가 함께 만들어가는 <span class="emphasis">운명공동체</span>
+            </div>
+            <div class="poem-verse">
+                건물주의 고민, 상인의 걱정<br>
+                주민의 불편, 학생의 무관심<br>
+                모든 것이 <span class="whisper">하나의 실타래로 엮여있다</span>
+            </div>
+            <div class="poem-verse">
+                가을바람에 실려오는 깨달음<br>
+                <span class="emphasis">상호의존의 생태계</span> 속에서<br>
+                우리는 모두 연결되어 있다
+            </div>
+        </div>
+
+        <div class="poem-section">
+            <h2 class="season-title winter">❄️ 겨울 - 희망의 계절</h2>
+            <div class="poem-verse">
+                한겨울 추위 속에서도<br>
+                <span class="emphasis">그린 포인트 시스템</span>의 불빛이 켜진다
+            </div>
+            <div class="poem-verse">
+                올바른 분리배출 하나하나가<br>
+                상점 할인의 따뜻함으로 돌아오고<br>
+                <span class="whisper">청년과 상인이 손을 맞잡는다</span>
+            </div>
+            <div class="poem-verse">
+                IoT 센서가 깜빡이는 스마트 쓰레기통<br>
+                실시간으로 알려주는 우리의 노력들<br>
+                <span class="emphasis">67%에서 90%로</span> 올라가는 희망의 수치
+            </div>
+            <div class="poem-verse">
+                배밭골 환경위원회의 첫 회의<br>
+                주민, 상인, 학생, 공무원, 전문가가<br>
+                둥근 테이블에 앉아 미래를 설계한다
+            </div>
+        </div>
+
+        <div class="poem-section">
+            <h2 class="season-title" style="color: #9b59b6;">🌟 영원한 봄 - 새로운 시작</h2>
+            <div class="poem-verse">
+                산림환경시스템학과 최희도<br>
+                20211818번의 작은 씨앗이<br>
+                배밭골 전체를 숲으로 만들 때까지
+            </div>
+            <div class="poem-verse">
+                <span class="emphasis">일평균 신고 4.2건이 2건으로</span><br>
+                <span class="emphasis">연간 3천만원이 1천 5백만원으로</span><br>
+                숫자가 아닌 사람의 이야기로 바뀌어간다
+            </div>
+            <div class="poem-verse">
+                <span class="whisper">지역사회는 내가 살아가는 곳이 아니라<br>
+                내가 만들어가는 곳이다</span>
+            </div>
+            <div class="poem-verse">
+                배밭골에서 성북구로<br>
+                성북구에서 서울시로<br>
+                서울시에서 대한민국으로<br>
+                <span class="emphasis">작은 변화가 큰 희망이 되어</span>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p>"쓰레기 더미에서 시작된 작은 관심이<br>
+            지역사회 전체를 바꾸는 혁명이 되었다"</p>
+            <br>
+            <p style="font-style: italic; opacity: 0.8;">
+                - 2025년 봄, 배밭골에서 -
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 파티클 생성
+        function createParticles() {
+            const container = document.getElementById('particles');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // 시 읽기 효과
+        function addReadingEffect() {
+            const verses = document.querySelectorAll('.poem-verse');
+            
+            verses.forEach((verse, index) => {
+                verse.addEventListener('click', () => {
+                    verse.style.background = 'rgba(241, 196, 15, 0.2)';
+                    verse.style.borderLeft = '4px solid #f1c40f';
+                    verse.style.paddingLeft = '1.5rem';
+                    
+                    setTimeout(() => {
+                        verse.style.background = 'transparent';
+                        verse.style.borderLeft = 'none';
+                        verse.style.paddingLeft = '2rem';
+                    }, 2000);
+                });
+            });
+        }
+
+        // 스크롤 효과
+        function addScrollEffects() {
+            const sections = document.querySelectorAll('.poem-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transform = 'scale(1.02)';
+                        entry.target.style.transition = 'transform 0.3s ease';
+                        
+                        setTimeout(() => {
+                            entry.target.style.transform = 'scale(1)';
+                        }, 300);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // 초기화
+        window.addEventListener('load', () => {
+            createParticles();
+            addReadingEffect();
+            addScrollEffects();
+        });
+
+        // 키보드 인터랙션
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                window.scrollBy(0, window.innerHeight * 0.5);
+            }
+        });
+    </script>
+</body>
+</html>

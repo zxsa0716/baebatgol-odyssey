@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배밭골 데이터 오디세이</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .dashboard-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .stat-trend {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            color: #ff6b6b;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #4ecdc4;
+        }
+
+        .interactive-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 1.5s both;
+        }
+
+        .simulation-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-button.active {
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            transform: scale(1.05);
+        }
+
+        .timeline-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 2s both;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #4ecdc4, #45b7d1, #ff6b6b);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+
+        .timeline-item:nth-child(even) {
+            animation: slideInRight 0.5s ease-out forwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.6s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-left: 60%;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 0;
+            margin-right: 60%;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .prediction-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 2.5s both;
+        }
+
+        .prediction-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #4ecdc4;
+        }
+
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .prediction-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .prediction-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .floating-data {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            .timeline-content {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            .dashboard-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-data" id="floatingData"></div>
+    
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">배밭골 데이터 오디세이</h1>
+            <p class="dashboard-subtitle">숫자가 말하는 지역사회의 진실</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card" data-info="2024년 1-3월 평균 기준">
+                <div class="stat-number" id="dailyReports">4.2</div>
+                <div class="stat-label">일평균 신고 건수</div>
+                <div class="stat-trend">📈 지속적 증가</div>
+            </div>
+            <div class="stat-card" data-info="주말 vs 평일 비교">
+                <div class="stat-number" id="weekendIncrease">2.3</div>
+                <div class="stat-label">주말 쓰레기 증가율</div>
+                <div class="stat-trend">🔥 배 증가</div>
+            </div>
+            <div class="stat-card" data-info="분리배출 정확도">
+                <div class="stat-number" id="separationError">67%</div>
+                <div class="stat-label">분리배출 오류율</div>
+                <div class="stat-trend">❌ 개선 필요</div>
+            </div>
+            <div class="stat-card" data-info="연간 추가 발생 비용">
+                <div class="stat-number" id="additionalCost">3,000</div>
+                <div class="stat-label">만원 추가 청소비용</div>
+                <div class="stat-trend">💰 예산 부담</div>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <div class="chart-title">주간 쓰레기 발생량 패턴</div>
+                <canvas id="weeklyChart" width="400" height="300"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">분리배출 현황</div>
+                <canvas id="separationChart" width="400" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="interactive-section">
+            <div class="chart-title">시나리오 시뮬레이션</div>
+            <div class="simulation-controls">
+                <button class="control-button active" onclick="showScenario('current')">현재 상황</button>
+                <button class="control-button" onclick="showScenario('green')">그린 프로젝트</button>
+                <button class="control-button" onclick="showScenario('smart')">스마트 인프라</button>
+                <button class="control-button" onclick="showScenario('community')">커뮤니티 참여</button>
+            </div>
+            <canvas id="scenarioChart" width="800" height="400"></canvas>
+        </div>
+
+        <div class="timeline-container">
+            <div class="chart-title">배밭골 변화의 여정</div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024년 1월</div>
+                        <div class="timeline-description">
+                            문제 인식: 일평균 4.2건 신고, 주민 불만 증대
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024년 3월</div>
+                        <div class="timeline-description">
+                            연구 시작: 정릉3동 배밭골 현장 조사 및 데이터 수집
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025년 2월</div>
+                        <div class="timeline-description">
+                            정책 분석: 서울시-성북구 3단계 정책 체계 분석 완료
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025년 3월</div>
+                        <div class="timeline-description">
+                            해결방안 도출: 그린 커뮤니티 프로젝트 설계
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="prediction-section">
+            <div class="prediction-title">2026년 예상 성과</div>
+            <div class="prediction-grid">
+                <div class="prediction-card">
+                    <div class="prediction-value">2.0</div>
+                    <div class="prediction-label">일평균 신고 건수</div>
+                </div>
+                <div class="prediction-card">
+                    <div class="prediction-value">1.5</div>
+                    <div class="prediction-label">주말 쓰레기 증가율</div>
+                </div>
+                <div class="prediction-card">
+                    <div class="prediction-value">90%</div>
+                    <div class="prediction-label">분리배출 정확도</div>
+                </div>
+                <div class="prediction-card">
+                    <div class="prediction-value">1,500</div>
+                    <div class="prediction-label">만원 청소비용 절감</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 차트 데이터 및 설정
+        const chartColors = {
+            primary: '#4ecdc4',
+            secondary: '#ff6b6b',
+            accent: '#45b7d1',
+            warning: '#feca57'
+        };
+
+        // 주간 쓰레기 발생량 차트
+        const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+        const weeklyChart = new Chart(weeklyCtx, {
+            type: 'line',
+            data: {
+                labels: ['월', '화', '수', '목', '금', '토', '일'],
+                datasets: [{
+                    label: '쓰레기 발생량 (kg)',
+                    data: [120, 100, 110, 130, 180, 280, 300],
+                    borderColor: chartColors.primary,
+                    backgroundColor: 'rgba(78, 205, 196, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 분리배출 현황 차트
+        const separationCtx = document.getElementById('separationChart').getContext('2d');
+        const separationChart = new Chart(separationCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['올바른 분리배출', '잘못된 분리배출'],
+                datasets: [{
+                    data: [33, 67],
+                    backgroundColor: [chartColors.primary, chartColors.secondary],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 시나리오 차트
+        const scenarioCtx = document.getElementById('scenarioChart').getContext('2d');
+        let scenarioChart = new Chart(scenarioCtx, {
+            type: 'bar',
+            data: {
+                labels: ['신고 건수', '분리배출 정확도', '추가 비용', '주민 만족도'],
+                datasets: [{
+                    label: '현재 상황',
+                    data: [4.2, 33, 3000, 30],
+                    backgroundColor: chartColors.secondary
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 시나리오 변경 함수
+        function showScenario(scenario) {
+            // 버튼 활성화 상태 변경
+            document.querySelectorAll('.control-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            let data, label, color;
+            
+            switch(scenario) {
+                case 'current':
+                    data = [4.2, 33, 3000, 30];
+                    label = '현재 상황';
+                    color = chartColors.secondary;
+                    break;
+                case 'green':
+                    data = [3.5, 50, 2500, 50];
+                    label = '그린 프로젝트';
+                    color = chartColors.primary;
+                    break;
+                case 'smart':
+                    data = [2.8, 70, 2000, 70];
+                    label = '스마트 인프라';
+                    color = chartColors.accent;
+                    break;
+                case 'community':
+                    data = [2.0, 90, 1500, 85];
+                    label = '커뮤니티 참여';
+                    color = chartColors.warning;
+                    break;
+            }
+
+            scenarioChart.data.datasets[0] = {
+                label: label,
+                data: data,
+                backgroundColor: color
+            };
+            scenarioChart.update('active');
+        }
+
+        // 숫자 애니메이션
+        function animateNumber(element, start, end, duration) {
+            const startTime = Date.now();
+            const difference = end - start;
+            
+            function updateNumber() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = start + (difference * progress);
+                
+                if (element.id === 'separationError') {
+                    element.textContent = Math.floor(current) + '%';
+                } else if (element.id === 'weekendIncrease') {
+                    element.textContent = current.toFixed(1) + 'x';
+                } else if (element.id === 'dailyReports') {
+                    element.textContent = current.toFixed(1);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                }
+            }
+            
+            updateNumber();
+        }
+
+        // 마우스 오버 효과
+        function addHoverEffects() {
+            const statCards = document.querySelectorAll('.stat-card');
+            const floatingData = document.getElementById('floatingData');
+            
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', (e) => {
+                    const info = e.currentTarget.getAttribute('data-info');
+                    floatingData.textContent = info;
+                    floatingData.style.opacity = '1';
+                });
+                
+                card.addEventListener('mousemove', (e) => {
+                    floatingData.style.left = e.clientX + 10 + 'px';
+                    floatingData.style.top = e.clientY - 40 + 'px';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    floatingData.style.opacity = '0';
+                });
+            });
+        }
+
+        // 초기화
+        window.addEventListener('load', () => {
+            // 숫자 애니메이션
+            animateNumber(document.getElementById('dailyReports'), 0, 4.2, 2000);
+            animateNumber(document.getElementById('weekendIncrease'), 0, 2.3, 2000);
+            animateNumber(document.getElementById('separationError'), 0, 67, 2000);
+            animateNumber(document.getElementById('additionalCost'), 0, 3000, 2000);
+            
+            // 호버 효과 추가
+            addHoverEffects();
+        });
+
+        // 스크롤 기반 차트 애니메이션
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.querySelector('canvas')) {
+                        entry.target.style.transform = 'scale(1.02)';
+                        setTimeout(() => {
+                            entry.target.style.transform = 'scale(1)';
+                        }, 300);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.chart-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

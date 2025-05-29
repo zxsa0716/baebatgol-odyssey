@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나에게 지역사회란 무엇인가</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', '나눔명조', serif;
+            background: linear-gradient(135deg, #2d3436, #636e72, #2d3436);
+            background-size: 400% 400%;
+            animation: backgroundFlow 20s ease infinite;
+            color: #ddd;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        @keyframes backgroundFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .essay-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-thoughts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .thought-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: floatThought 15s infinite ease-in-out;
+        }
+
+        @keyframes floatThought {
+            0%, 100% { 
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            50% { 
+                transform: translateY(-100px) scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        .essay-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .essay-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #74b9ff, #0984e3, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .essay-subtitle {
+            font-size: 1.4rem;
+            opacity: 0.8;
+            font-style: italic;
+            color: #74b9ff;
+        }
+
+        .essay-meta {
+            margin-top: 1rem;
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .essay-section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .essay-section:nth-child(2) { animation-delay: 0.5s; }
+        .essay-section:nth-child(3) { animation-delay: 1s; }
+        .essay-section:nth-child(4) { animation-delay: 1.5s; }
+        .essay-section:nth-child(5) { animation-delay: 2s; }
+        .essay-section:nth-child(6) { animation-delay: 2.5s; }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #74b9ff;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: linear-gradient(to bottom, #74b9ff, #0984e3);
+            border-radius: 2px;
+        }
+
+        .essay-paragraph {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-align: justify;
+            text-indent: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .essay-paragraph:hover {
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateX(10px);
+            box-shadow: -4px 0 8px rgba(116, 185, 255, 0.2);
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(116, 185, 255, 0.3) 0%, transparent 100%);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #74b9ff;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #00b894;
+            position: relative;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: rgba(0, 184, 148, 0.1);
+            border-left: 4px solid #00b894;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 4rem;
+            color: #00b894;
+            opacity: 0.3;
+        }
+
+        .data-insight {
+            background: rgba(116, 185, 255, 0.1);
+            border: 1px solid rgba(116, 185, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .data-insight::before {
+            content: '📊';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #2d3436;
+            padding: 0 10px;
+            font-size: 1.5rem;
+        }
+
+        .reflection-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .reflection-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #74b9ff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .thought-connection {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+
+        .thought-node {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .thought-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+        }
+
+        .connection-arrow {
+            font-size: 1.5rem;
+            color: #74b9ff;
+            margin: 0 1rem;
+        }
+
+        .personal-story {
+            background: linear-gradient(135deg, rgba(116, 185, 255, 0.1), rgba(0, 184, 148, 0.1));
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem 0;
+            border: 1px solid rgba(116, 185, 255, 0.2);
+        }
+
+        .story-moment {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #00b894;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .conclusion-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 4rem 0;
+            border: 2px solid rgba(116, 185, 255, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .conclusion-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #74b9ff, #0984e3, #00b894, #74b9ff);
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s ease infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .final-thought {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #74b9ff;
+            margin-bottom: 1rem;
+        }
+
+        .signature {
+            margin-top: 3rem;
+            text-align: right;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #74b9ff, #0984e3, #00b894);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        @media (max-width: 768px) {
+            .essay-title {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .essay-paragraph {
+                font-size: 1.1rem;
+            }
+            .essay-container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="floating-thoughts" id="floatingThoughts"></div>
+
+    <div class="essay-container">
+        <div class="essay-header">
+            <h1 class="essay-title">나에게 지역사회란 무엇인가</h1>
+            <p class="essay-subtitle">배밭골에서 찾은 상호의존의 철학</p>
+            <p class="essay-meta">산림환경시스템학과 20211818 최희도 | 2025년 3월</p>
+        </div>
+
+        <div class="essay-section">
+            <h2 class="section-title">🌱 서문: 쓰레기 더미에서 시작된 철학</h2>
+            <p class="essay-paragraph">
+                2개월 전, 나는 단순히 <span class="highlight">과제를 위해</span> 정릉3동 배밭골을 찾았다. 
+                국민대학교에서 불과 500미터 떨어진 이 작은 골목이 내게 이토록 큰 깨달음을 줄 줄은 몰랐다. 
+                경사진 골목길을 오르내리며 쌓여가는 쓰레기 더미를 보고, 일평균 4.2건의 신고전화를 들으며, 
+                나는 비로소 질문하기 시작했다.
+            </p>
+            
+            <div class="quote">
+                "지역사회란 무엇인가? 그것은 단순히 같은 동네에 사는 사람들의 집합인가, 
+                아니면 그보다 더 깊은 무언가가 있는 것인가?"
+            </div>
+
+            <p class="essay-paragraph">
+                이 질문은 나를 2개월간의 여행으로 이끌었다. 데이터를 수집하고, 정책을 분석하고, 
+                이해관계자들을 만나면서, 나는 지역사회에 대한 근본적인 이해가 바뀌어가는 것을 느꼈다.
+            </p>
+        </div>
+
+        <div class="essay-section">
+            <h2 class="section-title">🔍 첫 번째 깨달음: 지역사회는 운명공동체다</h2>
+            
+            <div class="data-insight">
+                <strong>현실의 무게:</strong> 주말이면 평일 대비 2.3배 증가하는 쓰레기량, 
+                67%에 달하는 분리배출 오류율, 연간 3,000만원의 추가 청소비용
+            </div>
+
+            <p class="essay-paragraph">
+                숫자는 거짓말하지 않는다. 하지만 숫자 뒤에 숨겨진 진실은 더욱 충격적이었다. 
+                <span class="highlight">58.7%의 청년 1인가구</span>들이 만들어내는 이 문제는 
+                개인의 일탈이 아닌 구조적 현상이었다.
+            </p>
+
+            <div class="personal-story">
+                <div class="story-moment">"아저씨, 죄송해요. 또 신고 들어왔나 봐요?"</div>
+                <p class="essay-paragraph">
+                    환경미화원 김씨(가명)와의 대화에서 나는 깨달았다. 
+                    이 문제는 누군가 한 명의 잘못이 아니라, 우리 모두가 함께 짊어져야 할 
+                    <span class="highlight">공동의 운명</span>이라는 것을.
+                </p>
+            </div>
+
+            <p class="essay-paragraph">
+                지역사회의 첫 번째 본질은 바로 이것이다. <span class="highlight">운명공동체</span>. 
+                한 사람의 행동이 모든 사람에게 영향을 미치고, 모든 사람의 참여 없이는 
+                아무도 진정한 해결책을 찾을 수 없는 곳.
+            </p>
+        </div>
+
+        <div class="essay-section">
+            <h2 class="section-title">🤝 두 번째 깨달음: 지역사회는 이해관계의 복합체다</h2>
+
+            <div class="thought-connection">
+                <div class="thought-node">청년 세입자</div>
+                <div class="connection-arrow">⟷</div>
+                <div class="thought-node">건물주</div>
+                <div class="connection-arrow">⟷</div>
+                <div class="thought-node">상인</div>
+                <div class="connection-arrow">⟷</div>
+                <div class="thought-node">공무원</div>
+            </div>
+
+            <p class="essay-paragraph">
+                처음에는 이들의 관계가 대립적으로만 보였다. 청년들은 편의를 추구하고, 
+                건물주는 수익을 걱정하고, 상인들은 매출을 고민하고, 공무원들은 민원을 처리한다. 
+                각자의 이해관계가 충돌하는 것처럼 보였다.
+            </p>
+
+            <div class="reflection-box">
+                <div class="reflection-title">💭 깊은 성찰의 순간</div>
+                <p class="essay-paragraph">
+                    하지만 더 깊이 들여다보니, 이들의 이해관계는 충돌하는 것이 아니라 
+                    <span class="highlight">복합적으로 얽혀있는 것</span>이었다. 
+                    건물주도 이 동네에서 살고, 상인도 이 동네 주민이며, 
+                    공무원도 결국 이 지역의 일원이다.
+                </p>
+            </div>
+
+            <p class="essay-paragraph">
+                모든 이해관계자들의 궁극적 목표는 하나였다. <span class="highlight">"살기 좋은 동네"</span>. 
+                방법론의 차이일 뿐, 모두가 같은 방향을 바라보고 있었다. 
+                지역사회의 두 번째 본질은 이 복합적 이해관계의 조화 속에서 찾을 수 있었다.
+            </p>
+        </div>
+
+        <div class="essay-section">
+            <h2 class="section-title">🌿 세 번째 깨달음: 지역사회는 살아있는 생태계다</h2>
+
+            <p class="essay-paragraph">
+                산림환경시스템학과 학생으로서, 나는 배밭골을 하나의 <span class="highlight">도시 생태계</span>로 
+                바라보기 시작했다. 생산자가 있고, 소비자가 있고, 분해자가 있으며, 
+                이들 사이에는 끊임없는 물질순환과 에너지 흐름이 일어난다.
+            </p>
+
+            <div class="data-insight">
+                <strong>생태계 관점의 배밭골:</strong><br>
+                • 생산자: 정책 입안자, 건물주, 상인 (서비스와 자원 제공)<br>
+                • 소비자: 주민, 학생 (서비스 이용, 폐기물 생산)<br>
+                • 분해자: 환경미화원, 재활용업체 (폐기물 처리)<br>
+                • 환경: 물리적 공간, 제도, 문화
+            </div>
+
+            <p class="essay-paragraph">
+                그리고 가장 중요한 깨달음은 이것이었다. 생태계는 <span class="highlight">스스로 변화하고 적응한다</span>는 것. 
+                배밭골도 마찬가지였다. 1990년대 하숙촌에서 2000년대 원룸촌으로, 
+                2010년대 청년 1인가구 밀집지역으로, 그리고 지금은 환경 사각지대로. 
+                끊임없이 변화하고 있었다.
+            </p>
+
+            <div class="quote">
+                "지역사회는 고정된 것이 아니라 끊임없이 변화하고 적응하는 살아있는 유기체다. 
+                문제는 이 변화의 방향을 어떻게 설정하느냐에 있다."
+            </div>
+        </div>
+
+        <div class="essay-section">
+            <h2 class="section-title">🎯 네 번째 깨달음: 지역사회는 내가 만들어가는 곳이다</h2>
+
+            <p class="essay-paragraph">
+                가장 중요한 깨달음은 마지막에 왔다. 지역사회는 <span class="highlight">내가 살아가는 곳이 아니라, 
+                내가 만들어가는 곳</span>이라는 것이다.
+            </p>
+
+            <div class="personal-story">
+                <div class="story-moment">"학생이 이런 연구를 하다니, 기특하네요."</div>
+                <p class="essay-paragraph">
+                    정릉3동 주민센터 직원분의 말씀이 내 마음에 깊이 박혔다. 
+                    나는 더 이상 이 문제의 관찰자가 아니라 <span class="highlight">참여자</span>가 되어 있었다.
+                </p>
+            </div>
+
+            <p class="essay-paragraph">
+                2개월간의 연구 과정에서 나는 단순한 데이터 수집자에서 해결방안을 모색하는 
+                <span class="highlight">지역사회의 일원</span>으로 변화했다. 
+                그린 포인트 시스템을 제안하고, IoT 기반 스마트 쓰레기통을 설계하고, 
+                환경위원회 구성을 계획하면서, 나는 이 지역사회의 미래를 함께 그려가고 있었다.
+            </p>
+
+            <div class="reflection-box">
+                <div class="reflection-title">🌟 전공과의 연결점</div>
+                <p class="essay-paragraph">
+                    산림환경시스템학과에서 배운 지식들이 이제 현실의 문제 해결에 적용되고 있었다. 
+                    생태계 이론, 환경정책, 지속가능성 개념들이 모두 이 작은 골목의 변화를 위한 
+                    도구가 되었다. 학문과 현실이 만나는 지점에서 나는 진정한 배움을 경험했다.
+                </p>
+            </div>
+        </div>
+
+        <div class="conclusion-section">
+            <div class="final-thought">
+                그렇다면, 나에게 지역사회란 무엇인가?
+            </div>
+            
+            <p class="essay-paragraph">
+                지역사회는 나의 <span class="highlight">실험실</span>이다. 
+                이론을 실천으로 옮기고, 아이디어를 현실로 구현하는 공간이다.
+                <br><br>
+                지역사회는 나의 <span class="highlight">성장의 터전</span>이다. 
+                다양한 사람들과 소통하고, 복잡한 문제를 해결하며, 
+                전문성과 인성을 함께 기르는 곳이다.
+                <br><br>
+                지역사회는 나의 <span class="highlight">책임</span>이다. 
+                이곳의 문제는 나의 문제이고, 이곳의 미래는 나의 미래다.
+                <br><br>
+                그리고 무엇보다, 지역사회는 나의 <span class="highlight">희망</span>이다. 
+                작은 변화가 큰 변화로 이어지고, 개인의 노력이 공동체의 변화가 되는 
+                기적이 일어나는 곳이다.
+            </p>
+
+            <div class="quote">
+                "일평균 4.2건의 신고에서 시작된 작은 관심이 
+                지역사회 전체를 바꾸는 혁명이 될 수 있다면, 
+                그것이야말로 진정한 지역사회의 힘이 아닐까?"
+            </div>
+        </div>
+
+        <div class="signature">
+            배밭골에서 꿈을 키우며<br>
+            산림환경시스템학과 20211818 최희도<br>
+            2025년 3월 20일
+        </div>
+    </div>
+
+    <script>
+        // 생각 거품 생성
+        function createThoughtBubbles() {
+            const container = document.getElementById('floatingThoughts');
+            const thoughts = [
+                '지역사회', '상호의존', '운명공동체', '생태계', '변화', '성장', 
+                '책임', '희망', '협력', '지속가능성', '미래', '공동체'
+            ];
+
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'thought-bubble';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.width = bubble.style.height = (Math.random() * 60 + 20) + 'px';
+                bubble.style.animationDelay = Math.random() * 15 + 's';
+                bubble.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                
+                // 일부 거품에 텍스트 추가
+                if (Math.random() > 0.7) {
+                    bubble.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+                    bubble.style.display = 'flex';
+                    bubble.style.alignItems = 'center';
+                    bubble.style.justifyContent = 'center';
+                    bubble.style.fontSize = '12px';
+                    bubble.style.color = 'rgba(255, 255, 255, 0.6)';
+                    bubble.style.borderRadius = '25px';
+                    bubble.style.padding = '10px';
+                }
+                
+                container.appendChild(bubble);
+            }
+        }
+
+        // 읽기 진행도 업데이트
+        function updateReadingProgress() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+
+        // 문단 하이라이트 효과
+        function addParagraphHighlight() {
+            const paragraphs = document.querySelectorAll('.essay-paragraph');
+            
+            paragraphs.forEach(paragraph => {
+                paragraph.addEventListener('click', () => {
+                    // 기존 하이라이트 제거
+                    paragraphs.forEach(p => p.classList.remove('paragraph-highlight'));
+                    
+                    // 현재 문단 하이라이트
+                    paragraph.classList.add('paragraph-highlight');
+                    paragraph.style.background = 'rgba(116, 185, 255, 0.1)';
+                    paragraph.style.borderLeft = '4px solid #74b9ff';
+                    
+                    setTimeout(() => {
+                        paragraph.style.background = 'rgba(255, 255, 255, 0.03)';
+                        paragraph.style.borderLeft = 'none';
+                    }, 3000);
+                });
+            });
+        }
+
+        // 스크롤 기반 애니메이션
+        function addScrollAnimations() {
+            const sections = document.querySelectorAll('.essay-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transform = 'translateX(10px)';
+                        entry.target.style.transition = 'transform 0.5s ease';
+                        
+                        setTimeout(() => {
+                            entry.target.style.transform = 'translateX(0)';
+                        }, 500);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // 키워드 강조 효과
+        function addKeywordEffects() {
+            const highlights = document.querySelectorAll('.highlight');
+            
+            highlights.forEach(highlight => {
+                highlight.addEventListener('mouseenter', () => {
+                    highlight.style.transform = 'scale(1.05)';
+                    highlight.style.boxShadow = '0 2px 8px rgba(116, 185, 255, 0.3)';
+                });
+                
+                highlight.addEventListener('mouseleave', () => {
+                    highlight.style.transform = 'scale(1)';
+                    highlight.style.boxShadow = 'none';
+                });
+            });
+        }
+
+        // 초기화
+        window.addEventListener('load', () => {
+            createThoughtBubbles();
+            addParagraphHighlight();
+            addScrollAnimations();
+            addKeywordEffects();
+            updateReadingProgress();
+        });
+
+        window.addEventListener('scroll', updateReadingProgress);
+
+        // 키보드 네비게이션
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollBy(0, window.innerHeight * 0.3);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                window.scrollBy(0, -window.innerHeight * 0.3);
+            }
+        });
+    </script>
+</body>
+</html>
